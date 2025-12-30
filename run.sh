@@ -21,5 +21,10 @@ fi
 # Cambiar al directorio del script
 cd "$(dirname "$0")"
 
+# Activar entorno virtual si existe
+if [ -d ".venv" ]; then
+    source .venv/bin/activate
+fi
+
 # Ejecutar la aplicación
 python3 main.py

@@ -1,9 +1,10 @@
 """
 Ventana de selección de instalación de Lutris (Nativa o Flatpak)
+Versión moderna con CustomTkinter y Material Design
 """
-import tkinter as tk
-from tkinter import ttk
+import customtkinter as ctk
 import os
+from ui import theme
 
 
 class InstallationSelector:
@@ -19,11 +20,17 @@ class InstallationSelector:
         self.native_exists = os.path.exists(self.PATH_NATIVE_DB)
         self.flatpak_exists = os.path.exists(self.PATH_FLATPAK_DB)
         
+        # Aplicar tema
+        theme.apply_theme()
+        
         # Crear ventana
-        self.window = tk.Tk()
-        self.window.title("Lutris Visual Manager - Selección de Instalación")
-        self.window.geometry("550x300")
+        self.window = ctk.CTk()
+        self.window.title("Lutris Visual Manager")
+        self.window.geometry("700x450")
         self.window.resizable(False, False)
+        
+        # Color de fondo
+        self.window.configure(fg_color=theme.PRIMARY_BG)
         
         # Centrar ventana
         self.center_window()
@@ -33,121 +40,184 @@ class InstallationSelector:
     def center_window(self):
         """Centra la ventana en la pantalla"""
         self.window.update_idletasks()
-        width = self.window.winfo_width()
-        height = self.window.winfo_height()
+        width = 700
+        height = 450
         x = (self.window.winfo_screenwidth() // 2) - (width // 2)
         y = (self.window.winfo_screenheight() // 2) - (height // 2)
         self.window.geometry(f'{width}x{height}+{x}+{y}')
     
     def setup_ui(self):
         """Configura la interfaz de la ventana"""
-        # Frame principal
-        main_frame = ttk.Frame(self.window, padding="20")
-        main_frame.pack(fill=tk.BOTH, expand=True)
-        
-        # Título
-        title_label = ttk.Label(
-            main_frame,
-            text="🎮 Lutris Visual Manager",
-            font=('Arial', 16, 'bold')
+        # Frame principal con padding
+        main_frame = ctk.CTkFrame(
+            self.window,
+            fg_color="transparent"
         )
-        title_label.pack(pady=(0, 10))
+        main_frame.pack(fill="both", expand=True, padx=theme.PADDING_L, pady=theme.PADDING_L)
+        
+        # Título principal
+        title_label = ctk.CTkLabel(
+            main_frame,
+            text=f"{theme.ICONS['game']} Lutris Visual Manager",
+            font=theme.FONT_TITLE,
+            text_color=theme.TEXT_PRIMARY
+        )
+        title_label.pack(pady=(0, theme.PADDING_S))
         
         # Subtítulo
-        subtitle_label = ttk.Label(
+        subtitle_label = ctk.CTkLabel(
             main_frame,
-            text="Selecciona la instalación de Lutris que deseas usar:",
-            font=('Arial', 11)
+            text="Selecciona tu instalación de Lutris",
+            font=theme.FONT_BODY,
+            text_color=theme.TEXT_SECONDARY
         )
-        subtitle_label.pack(pady=(0, 20))
+        subtitle_label.pack(pady=(0, theme.PADDING_XL))
         
-        # Frame para las opciones
-        options_frame = ttk.Frame(main_frame)
-        options_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        # Frame para las opciones (grid horizontal)
+        options_frame = ctk.CTkFrame(
+            main_frame,
+            fg_color="transparent"
+        )
+        options_frame.pack(fill="both", expand=True, pady=theme.PADDING_M)
         
-        # Opción 1: Nativa
-        self.native_button = self.create_option_button(
+        # Configurar grid para 2 columnas
+        options_frame.grid_columnconfigure(0, weight=1)
+        options_frame.grid_columnconfigure(1, weight=1)
+        
+        # Opción 1: Nativa (columna 0)
+        self.create_option_card(
             options_frame,
-            "🐧 Instalación Nativa",
-            "~/.local/share/lutris/",
-            self.native_exists,
-            lambda: self.select_mode("NATIVO"),
-            row=0
+            icon=theme.ICONS['native'],
+            title="Instalación Nativa",
+            description="~/.local/share/lutris/",
+            exists=self.native_exists,
+            command=lambda: self.select_mode("NATIVO"),
+            column=0
         )
         
-        # Opción 2: Flatpak
-        self.flatpak_button = self.create_option_button(
+        # Opción 2: Flatpak (columna 1)
+        self.create_option_card(
             options_frame,
-            "📦 Instalación Flatpak",
-            "~/.var/app/net.lutris.Lutris/",
-            self.flatpak_exists,
-            lambda: self.select_mode("FLATPAK"),
-            row=1
+            icon=theme.ICONS['flatpak'],
+            title="Instalación Flatpak",
+            description="~/.var/app/net.lutris.Lutris/",
+            exists=self.flatpak_exists,
+            command=lambda: self.select_mode("FLATPAK"),
+            column=1
         )
         
-        # Si solo hay una opción disponible, mostrar mensaje
+        # Si no hay instalaciones
         if not self.native_exists and not self.flatpak_exists:
-            error_label = ttk.Label(
+            warning_frame = ctk.CTkFrame(
                 main_frame,
-                text="⚠️  No se detectó ninguna instalación de Lutris",
-                font=('Arial', 10),
-                foreground='red'
+                fg_color=theme.CARD_BG,
+                corner_radius=theme.RADIUS_M,
+                border_width=1,
+                border_color=theme.WARNING
             )
-            error_label.pack(pady=10)
+            warning_frame.pack(fill="x", pady=theme.PADDING_M)
+            
+            warning_label = ctk.CTkLabel(
+                warning_frame,
+                text=f"{theme.ICONS['warning']} No se detectó ninguna instalación de Lutris",
+                font=theme.FONT_BODY,
+                text_color=theme.WARNING
+            )
+            warning_label.pack(pady=theme.PADDING_M)
             
             # Usar configuración por defecto después de 2 segundos
             self.window.after(2000, lambda: self.select_mode("NATIVO_DEFAULT"))
     
-    def create_option_button(self, parent, title, path, exists, command, row):
-        """Crea un botón de opción con estilo"""
-        # Frame para el botón
-        frame = ttk.Frame(parent, relief=tk.RAISED, borderwidth=1)
-        frame.grid(row=row, column=0, sticky=(tk.W, tk.E), pady=5, padx=10)
-        
-        # Configurar colores según si existe
+    def create_option_card(self, parent, icon, title, description, exists, command, column):
+        """Crea una card moderna para cada opción"""
+        # Determinar colores según disponibilidad
         if exists:
-            bg_color = '#2d5016'  # Verde oscuro
-            fg_color = '#90EE90'  # Verde claro
-            status = "✓ Detectada"
+            fg_color = theme.CARD_BG
+            border_color = theme.BORDER
+            hover_color = theme.TERTIARY_BG
+            text_color = theme.TEXT_PRIMARY
+            status_text = f"{theme.ICONS['check']} Detectada"
+            status_color = theme.SUCCESS
         else:
-            bg_color = '#3a3a3a'  # Gris oscuro
-            fg_color = '#888888'  # Gris
-            status = "✗ No encontrada"
+            fg_color = theme.SECONDARY_BG
+            border_color = theme.BORDER
+            hover_color = theme.SECONDARY_BG
+            text_color = theme.TEXT_DISABLED
+            status_text = f"{theme.ICONS['close']} No encontrada"
+            status_color = theme.TEXT_DISABLED
         
-        # Botón principal
-        button = tk.Button(
-            frame,
-            text=f"{title}\n{path}\n{status}",
-            command=command if exists else None,
-            font=('Arial', 10, 'bold'),
-            bg=bg_color,
-            fg=fg_color,
-            activebackground='#3d6b1f' if exists else bg_color,
-            activeforeground='white' if exists else fg_color,
-            relief=tk.FLAT,
-            cursor='hand2' if exists else 'arrow',
-            state=tk.NORMAL if exists else tk.DISABLED,
-            padx=20,
-            pady=15,
-            justify=tk.LEFT
+        # Frame principal de la card
+        card_frame = ctk.CTkFrame(
+            parent,
+            fg_color=fg_color,
+            corner_radius=theme.RADIUS_M,
+            border_width=2,
+            border_color=border_color
         )
-        button.pack(fill=tk.BOTH, expand=True)
+        card_frame.grid(row=0, column=column, padx=theme.PADDING_S, pady=0, sticky="nsew")
         
-        # Efecto hover (solo si existe)
+        # Frame interno con padding
+        inner_frame = ctk.CTkFrame(
+            card_frame,
+            fg_color="transparent"
+        )
+        inner_frame.pack(fill="both", expand=True, padx=theme.PADDING_M, pady=theme.PADDING_L)
+        
+        # Icono grande centrado
+        icon_label = ctk.CTkLabel(
+            inner_frame,
+            text=icon,
+            font=("Arial", 64),
+            text_color=text_color
+        )
+        icon_label.pack(pady=(theme.PADDING_M, theme.PADDING_S))
+        
+        # Título
+        title_label = ctk.CTkLabel(
+            inner_frame,
+            text=title,
+            font=theme.FONT_HEADING,
+            text_color=text_color,
+            wraplength=250
+        )
+        title_label.pack(pady=(0, theme.PADDING_XS))
+        
+        # Descripción
+        desc_label = ctk.CTkLabel(
+            inner_frame,
+            text=description,
+            font=theme.FONT_SMALL,
+            text_color=theme.TEXT_SECONDARY if exists else theme.TEXT_DISABLED,
+            wraplength=250
+        )
+        desc_label.pack(pady=(0, theme.PADDING_S))
+        
+        # Estado
+        status_label = ctk.CTkLabel(
+            inner_frame,
+            text=status_text,
+            font=theme.FONT_BODY_BOLD,
+            text_color=status_color
+        )
+        status_label.pack(pady=(theme.PADDING_XS, 0))
+        
+        # Hacer toda la card clickeable si existe
         if exists:
+            # Configurar cursor
+            for widget in [card_frame, inner_frame, icon_label, title_label, desc_label, status_label]:
+                widget.configure(cursor="hand2")
+                widget.bind("<Button-1>", lambda e: command())
+            
+            # Efectos hover
             def on_enter(e):
-                button.config(bg='#3d6b1f')
+                card_frame.configure(border_color=theme.BORDER_HOVER, fg_color=hover_color)
             
             def on_leave(e):
-                button.config(bg=bg_color)
+                card_frame.configure(border_color=border_color, fg_color=fg_color)
             
-            button.bind("<Enter>", on_enter)
-            button.bind("<Leave>", on_leave)
-        
-        # Configurar expansión
-        parent.grid_columnconfigure(0, weight=1)
-        
-        return button
+            for widget in [card_frame, inner_frame, icon_label, title_label, desc_label, status_label]:
+                widget.bind("<Enter>", on_enter)
+                widget.bind("<Leave>", on_leave)
     
     def select_mode(self, mode):
         """Selecciona el modo y cierra la ventana"""

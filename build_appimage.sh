@@ -57,7 +57,13 @@ pyinstaller --clean \
     --hidden-import=PIL \
     --hidden-import=PIL._tkinter_finder \
     --hidden-import=tkinter \
+    --hidden-import=tkinter.ttk \
+    --hidden-import=tkinter.constants \
+    --hidden-import=tkinter.filedialog \
+    --hidden-import=tkinter.messagebox \
     --collect-all=customtkinter \
+    --collect-all=tkinter \
+    --copy-metadata=customtkinter \
     --strip \
     --noupx \
     main.py

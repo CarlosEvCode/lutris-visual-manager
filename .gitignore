@@ -40,5 +40,10 @@ build/
 # mypy
 .mypy_cache/
 
-# Configuración local (si tienes API keys personales)
-# config_local.py
+# Configuración local y API Keys
+.env
+.env.local
+config_local.py
+apikey.txt
+*_apikey.txt
+

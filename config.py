@@ -7,7 +7,9 @@ import sys
 # ==========================================
 # 🔑 API KEY
 # ==========================================
-STEAMGRIDDB_API_KEY = "4e712a33643639391ac4f80886ace444"
+# El API Key se configurará en tiempo de ejecución
+# El usuario debe proporcionarlo al iniciar la aplicación
+STEAMGRIDDB_API_KEY = None
 
 # ==========================================
 # 📁 RUTAS DE LUTRIS (DETECCIÓN AUTOMÁTICA)

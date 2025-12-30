@@ -41,6 +41,22 @@ def main():
     if not check_dependencies():
         sys.exit(1)
     
+    # Solicitar API Key
+    print("\n🔑 Solicitando API Key de SteamGridDB...")
+    from ui.apikey_window import get_api_key
+    
+    api_key = get_api_key()
+    
+    if not api_key:
+        print("\n❌ No se proporcionó API Key. Saliendo...")
+        sys.exit(1)
+    
+    print("✓ API Key configurado")
+    
+    # Configurar API Key en config
+    import config
+    config.STEAMGRIDDB_API_KEY = api_key
+    
     # Mostrar ventana de selección de instalación
     print("\n🔍 Detectando instalaciones de Lutris...")
     from ui.installation_selector import get_installation_choice
@@ -54,7 +70,6 @@ def main():
     print(f"\n✓ Modo seleccionado: {selected_mode}")
     
     # Configurar rutas de Lutris según el modo seleccionado
-    import config
     config.configure_lutris_paths(selected_mode)
     
     # Verificar que la base de datos exista

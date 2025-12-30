@@ -40,6 +40,13 @@ SELECTED_BG = "#1f6feb"         # Fondo seleccionado
 SCROLLBAR = "#30363d"           # Scrollbar
 
 # ==========================================
+# 📏 DIMENSIONES Y ESPACIADO
+# ==========================================
+
+CORNER_RADIUS = 10              # Radio de esquinas redondeadas
+BORDER_WIDTH = 1                # Ancho de bordes
+
+# ==========================================
 # 📐 CONFIGURACIÓN DE CUSTOMTKINTER
 # ==========================================
 
@@ -51,24 +58,27 @@ def apply_theme():
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("blue")  # Base, se personalizará
 
-def get_button_colors():
-    """Retorna colores para botones"""
-    return {
-        "fg_color": ACCENT_BLUE,
-        "hover_color": ACCENT_BLUE_HOVER,
-        "text_color": "#ffffff",
-        "border_color": BORDER
-    }
+def get_button_colors(style="primary"):
+    """Retorna colores para botones según el estilo"""
+    if style == "secondary":
+        return {
+            "fg_color": TERTIARY_BG,
+            "hover_color": HOVER_BG,
+            "text_color": TEXT_PRIMARY,
+            "border_color": BORDER,
+            "border_width": 2
+        }
+    else:  # primary
+        return {
+            "fg_color": ACCENT_BLUE,
+            "hover_color": ACCENT_BLUE_HOVER,
+            "text_color": "#ffffff",
+            "border_color": BORDER
+        }
 
 def get_button_secondary_colors():
-    """Retorna colores para botones secundarios"""
-    return {
-        "fg_color": TERTIARY_BG,
-        "hover_color": HOVER_BG,
-        "text_color": TEXT_PRIMARY,
-        "border_color": BORDER,
-        "border_width": 2
-    }
+    """Retorna colores para botones secundarios (deprecated, usar get_button_colors('secondary'))"""
+    return get_button_colors("secondary")
 
 def get_entry_colors():
     """Retorna colores para campos de entrada"""

@@ -18,9 +18,20 @@ Aplicación gráfica para gestionar visualmente las imágenes (covers, banners e
 # Ubuntu/Debian/Mint
 sudo apt install python3-tk
 
-# Instalar Pillow
-pip install Pillow
+# Instalar dependencias Python
+pip install -r requirements.txt
 ```
+
+### API Key de SteamGridDB
+
+Esta aplicación requiere un API Key de SteamGridDB para buscar imágenes. Es **gratuito** y fácil de obtener:
+
+1. Visita: [https://www.steamgriddb.com/profile/preferences/api](https://www.steamgriddb.com/profile/preferences/api)
+2. Inicia sesión o crea una cuenta (gratis)
+3. Genera un nuevo API Key
+4. La aplicación te pedirá el API Key al iniciar
+
+**Nota de seguridad**: Cada usuario debe usar su propio API Key. No compartas tu API Key con nadie.
 
 ## 💻 Uso
 
@@ -30,10 +41,16 @@ pip install Pillow
 
 ```bash
 cd proyecto_visual
+./run.sh
+# o alternativamente:
 python3 main.py
 ```
 
-3. **Selecciona una plataforma** en el menú desplegable superior
+3. **Ingresa tu API Key** de SteamGridDB en la ventana inicial
+
+4. **Selecciona tu tipo de instalación** de Lutris (Native o Flatpak)
+
+5. **Selecciona una plataforma** en el menú desplegable superior
 
 4. **Navega por tus juegos** y verás sus imágenes actuales
 

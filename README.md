@@ -167,9 +167,28 @@ Para juegos de Nintendo (3DS, Wii U), el sistema automáticamente:
 
 - Verifica que Pillow esté instalado: `pip install Pillow`
 
+### "Instrucción ilegal" al ejecutar AppImage
+
+Este error puede ocurrir en sistemas más antiguos o máquinas virtuales:
+
+**Solución 1** - Recompilar en tu sistema:
+```bash
+git clone https://github.com/CarlosEvCode/lutris-visual-manager
+cd lutris-visual-manager
+./build_appimage.sh
+```
+
+**Solución 2** - Ejecutar desde código fuente:
+```bash
+git clone https://github.com/CarlosEvCode/lutris-visual-manager
+cd lutris-visual-manager
+pip install -r requirements.txt
+./run.sh
+```
+
 ## 📝 Licencia
 
-Proyecto de código abierto para uso personal.
+MIT License - Ver [LICENSE](LICENSE) para más detalles
 
 ## 🙏 Créditos
 

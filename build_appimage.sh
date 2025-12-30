@@ -42,6 +42,10 @@ echo ""
 echo "🔧 Compilando aplicación con PyInstaller..."
 echo ""
 
+# Variables de entorno para compatibilidad
+export PYTHONOPTIMIZE=0
+export PYINSTALLER_COMPILE_BOOTLOADER=0
+
 pyinstaller --clean \
     --onefile \
     --windowed \
@@ -54,6 +58,8 @@ pyinstaller --clean \
     --hidden-import=PIL._tkinter_finder \
     --hidden-import=tkinter \
     --collect-all=customtkinter \
+    --strip \
+    --noupx \
     main.py
 
 if [ $? -ne 0 ]; then

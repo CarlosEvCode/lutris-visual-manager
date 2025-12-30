@@ -231,9 +231,12 @@ class InstallationSelector:
         return self.selected_mode
 
 
-def get_installation_choice():
+def get_installation_choice(default_mode=None):
     """
     Función de conveniencia para obtener la elección del usuario
+    
+    Args:
+        default_mode: Modo por defecto a preseleccionar (opcional)
     
     Returns:
         str: 'NATIVO', 'FLATPAK' o 'NATIVO_DEFAULT'

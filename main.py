@@ -41,33 +41,54 @@ def main():
     if not check_dependencies():
         sys.exit(1)
     
-    # Solicitar API Key
-    print("\n🔑 Solicitando API Key de SteamGridDB...")
-    from ui.apikey_window import get_api_key
+    # Cargar gestor de configuración
+    from utils.config_manager import get_config_manager
+    config_mgr = get_config_manager()
     
-    api_key = get_api_key()
+    # Verificar si ya existe un API Key guardado
+    saved_api_key = config_mgr.get_api_key()
     
-    if not api_key:
-        print("\n❌ No se proporcionó API Key. Saliendo...")
-        sys.exit(1)
-    
-    print("✓ API Key configurado")
+    if saved_api_key:
+        print("\n✓ API Key encontrado en configuración")
+        api_key = saved_api_key
+    else:
+        # Solicitar API Key
+        print("\n🔑 Solicitando API Key de SteamGridDB...")
+        from ui.apikey_window import get_api_key
+        
+        api_key = get_api_key(show_change_option=False)
+        
+        if not api_key:
+            print("\n❌ No se proporcionó API Key. Saliendo...")
+            sys.exit(1)
+        
+        # Guardar API Key
+        if config_mgr.set_api_key(api_key):
+            print("✓ API Key guardado correctamente")
+        else:
+            print("⚠️  No se pudo guardar el API Key (se usará esta sesión)")
     
     # Configurar API Key en config
     import config
     config.STEAMGRIDDB_API_KEY = api_key
     
+    # Verificar si hay un modo de instalación guardado
+    saved_mode = config_mgr.get_last_installation_mode()
+    
     # Mostrar ventana de selección de instalación
     print("\n🔍 Detectando instalaciones de Lutris...")
     from ui.installation_selector import get_installation_choice
     
-    selected_mode = get_installation_choice()
+    selected_mode = get_installation_choice(default_mode=saved_mode)
     
     if not selected_mode:
         print("\n❌ No se seleccionó ninguna instalación. Saliendo...")
         sys.exit(1)
     
     print(f"\n✓ Modo seleccionado: {selected_mode}")
+    
+    # Guardar el modo seleccionado para la próxima vez
+    config_mgr.set_last_installation_mode(selected_mode)
     
     # Configurar rutas de Lutris según el modo seleccionado
     config.configure_lutris_paths(selected_mode)

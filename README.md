@@ -29,7 +29,13 @@ Esta aplicación requiere un API Key de SteamGridDB para buscar imágenes. Es **
 1. Visita: [https://www.steamgriddb.com/profile/preferences/api](https://www.steamgriddb.com/profile/preferences/api)
 2. Inicia sesión o crea una cuenta (gratis)
 3. Genera un nuevo API Key
-4. La aplicación te pedirá el API Key al iniciar
+4. **Solo la primera vez**, la aplicación te pedirá el API Key
+
+**Configuración persistente:**
+- Tu API Key se guarda de forma segura en `~/.config/lutris-visual-manager/config.json`
+- Solo necesitas ingresarlo una vez
+- Permisos 600 (solo tú puedes leer/escribir el archivo)
+- Puedes cambiar tu API Key desde el botón "Configuración" en la aplicación
 
 **Nota de seguridad**: Cada usuario debe usar su propio API Key. No compartas tu API Key con nadie.
 
@@ -46,11 +52,11 @@ cd proyecto_visual
 python3 main.py
 ```
 
-3. **Ingresa tu API Key** de SteamGridDB en la ventana inicial
+3. **Ingresa tu API Key** de SteamGridDB (solo la primera vez)
 
-4. **Selecciona tu tipo de instalación** de Lutris (Native o Flatpak)
+4. **Selecciona tu tipo de instalación** de Lutris: Native o Flatpak (se recordará para la próxima vez)
 
-5. **Selecciona una plataforma** en el menú desplegable superior
+5. **Selecciona una plataforma** en el menú desplegable del sidebar izquierdo
 
 4. **Navega por tus juegos** y verás sus imágenes actuales
 
@@ -97,12 +103,36 @@ proyecto_visual/
 
 ## ⚙️ Configuración
 
+### Archivos de configuración
+
+La aplicación guarda tu configuración en:
+- `~/.config/lutris-visual-manager/config.json`
+  - API Key de SteamGridDB
+  - Último modo de instalación usado (Native/Flatpak)
+  - Permisos 600 (solo tu usuario puede acceder)
+
+### Cambiar API Key
+
+1. Abre la aplicación
+2. Click en "⚙️ Configuración" en el sidebar
+3. Ingresa tu nuevo API Key
+
+### Personalización adicional
+
 Puedes modificar `config.py` para:
 
 - Cambiar rutas de Lutris
 - Ajustar tamaños de miniaturas
 - Modificar filtros anti-DMCA
 - Agregar más plataformas
+
+## 📦 Distribución
+
+¿Quieres distribuir esta aplicación? Consulta [PACKAGING.md](PACKAGING.md) para:
+- Crear AppImage
+- Compilar con PyInstaller
+- Empaquetar como Flatpak/Snap
+- Instrucciones detalladas para cada método
 
 ## 🛡️ Filtro Anti-DMCA
 

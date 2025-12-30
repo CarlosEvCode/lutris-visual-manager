@@ -30,6 +30,8 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+*.AppImage
+*.AppDir/
 
 # Jupyter Notebook
 .ipynb_checkpoints

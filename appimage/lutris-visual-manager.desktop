@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Lutris Visual Manager
+Comment=Gestor visual de imágenes para Lutris
+Exec=AppRun
+Icon=lutris-visual-manager
+Type=Application
+Categories=Game;Utility;
+Terminal=false
+StartupNotify=true
+Keywords=lutris;games;covers;banners;images;
+X-AppImage-Version=1.0

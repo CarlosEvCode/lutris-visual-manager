@@ -5,12 +5,19 @@ import customtkinter as ctk
 from ui import theme
 
 class APIKeyWindow:
-    def __init__(self):
+    def __init__(self, show_change_option=False, current_key=None):
+        """
+        Args:
+            show_change_option: Si es True, muestra opción para cambiar API Key existente
+            current_key: API Key actual a mostrar en el campo (opcional)
+        """
         self.api_key = None
+        self.show_change_option = show_change_option
+        self.current_key = current_key
         self.window = ctk.CTk()
         self.window.title("API Key - SteamGridDB")
-        self.window.geometry("600x400")
-        self.center_window(600, 400)
+        self.window.geometry("600x450")
+        self.center_window(600, 450)
         
         # Configurar el tema
         ctk.set_appearance_mode("dark")
@@ -40,9 +47,13 @@ class APIKeyWindow:
         main_frame.pack(fill="both", expand=True, padx=theme.PADDING_L, pady=theme.PADDING_L)
         
         # Título
+        title_text = "🔑 API Key de SteamGridDB"
+        if self.show_change_option:
+            title_text = "🔄 Cambiar API Key"
+        
         title_label = ctk.CTkLabel(
             main_frame,
-            text="🔑 API Key de SteamGridDB",
+            text=title_text,
             font=theme.FONT_TITLE,
             text_color=theme.TEXT_PRIMARY
         )
@@ -102,7 +113,7 @@ class APIKeyWindow:
         # Input del API Key
         input_label = ctk.CTkLabel(
             main_frame,
-            text="Ingresa tu API Key:",
+            text="Ingresa tu API Key:" if not self.current_key else "API Key actual:",
             font=theme.FONT_BODY,
             text_color=theme.TEXT_PRIMARY,
             anchor="w"
@@ -119,10 +130,25 @@ class APIKeyWindow:
             placeholder_text="Ej: 1a2b3c4d5e6f7g8h9i0j..."
         )
         self.api_key_entry.pack(fill="x", pady=(0, theme.PADDING_M))
+        
+        # Si hay un API Key actual, mostrarlo
+        if self.current_key:
+            self.api_key_entry.insert(0, self.current_key)
+        
         self.api_key_entry.focus()
         
         # Bind Enter key
         self.api_key_entry.bind("<Return>", lambda e: self.on_continue())
+        
+        # Nota sobre seguridad
+        security_note = ctk.CTkLabel(
+            main_frame,
+            text="🔒 Tu API Key se guardará de forma segura en ~/.config/lutris-visual-manager/",
+            font=theme.FONT_SMALL,
+            text_color=theme.TEXT_SECONDARY,
+            wraplength=500
+        )
+        security_note.pack(pady=(0, theme.PADDING_M))
         
         # Frame de botones
         buttons_frame = ctk.CTkFrame(
@@ -186,12 +212,16 @@ class APIKeyWindow:
         return self.api_key
 
 
-def get_api_key():
+def get_api_key(show_change_option=False, current_key=None):
     """
     Muestra la ventana de API Key y retorna el key ingresado
+    
+    Args:
+        show_change_option: Si es True, indica que se está cambiando un API Key existente
+        current_key: API Key actual a mostrar en el campo (opcional)
     
     Returns:
         str: API Key ingresado o None si se canceló
     """
-    window = APIKeyWindow()
+    window = APIKeyWindow(show_change_option=show_change_option, current_key=current_key)
     return window.show()

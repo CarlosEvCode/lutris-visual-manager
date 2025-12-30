@@ -140,6 +140,26 @@ class MainWindow:
         )
         refresh_btn.pack(padx=theme.PADDING_M, pady=theme.PADDING_S)
         
+        # Separador
+        ctk.CTkFrame(
+            self.sidebar,
+            height=1,
+            fg_color=theme.BORDER
+        ).pack(fill="x", pady=theme.PADDING_M, padx=theme.PADDING_M)
+        
+        # Botón de configuración
+        settings_btn = ctk.CTkButton(
+            self.sidebar,
+            text=f"{theme.ICONS['settings']} Configuración",
+            **theme.get_button_secondary_colors(),
+            command=self.show_settings,
+            width=240,
+            height=theme.BUTTON_HEIGHT,
+            corner_radius=theme.RADIUS_S,
+            font=theme.FONT_BODY
+        )
+        settings_btn.pack(padx=theme.PADDING_M, pady=theme.PADDING_S)
+        
         # Espaciador
         ctk.CTkLabel(self.sidebar, text="", height=20).pack(expand=True)
         
@@ -518,6 +538,37 @@ class MainWindow:
         
         widget._parent_canvas.bind("<Enter>", on_enter)
         widget._parent_canvas.bind("<Leave>", on_leave)
+    
+    def show_settings(self):
+        """Muestra ventana de configuración"""
+        from ui.apikey_window import get_api_key
+        from utils.config_manager import get_config_manager
+        
+        config_mgr = get_config_manager()
+        current_api_key = config_mgr.get_api_key()
+        
+        # Solicitar nuevo API Key mostrando el actual
+        new_api_key = get_api_key(show_change_option=True, current_key=current_api_key)
+        
+        if new_api_key and new_api_key != current_api_key:
+            # Guardar nuevo API Key
+            if config_mgr.set_api_key(new_api_key):
+                # Actualizar en config
+                config.STEAMGRIDDB_API_KEY = new_api_key
+                # Reinicializar API
+                self.api = SteamGridDBAPI()
+                
+                dialogs.show_success(
+                    self.root,
+                    "API Key actualizado",
+                    "El API Key se ha actualizado correctamente.\nYa puedes continuar usando la aplicación."
+                )
+            else:
+                dialogs.show_error(
+                    self.root,
+                    "Error",
+                    "No se pudo guardar el nuevo API Key."
+                )
     
     def run(self):
         """Inicia la aplicación"""

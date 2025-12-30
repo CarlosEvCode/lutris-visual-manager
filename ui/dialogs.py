@@ -24,13 +24,12 @@ class CustomDialog:
         # Crear ventana
         self.window = ctk.CTkToplevel(parent)
         self.window.title(title)
-        self.window.geometry("400x200")
+        self.window.geometry("450x250")
         self.window.configure(fg_color=theme.PRIMARY_BG)
         self.window.resizable(False, False)
         
-        # Hacer modal
+        # Hacer modal (después de hacer visible)
         self.window.transient(parent)
-        self.window.grab_set()
         
         # Centrar ventana
         self.center_window(parent)
@@ -47,6 +46,9 @@ class CustomDialog:
         icon, color = icons.get(dialog_type, icons['info'])
         
         self.setup_ui(icon, color, title, message, buttons)
+        
+        # Hacer grab después de que la ventana sea visible
+        self.window.after(100, lambda: self.window.grab_set())
         
         # Esperar a que se cierre
         self.window.wait_window()
@@ -97,7 +99,7 @@ class CustomDialog:
         
         # Frame de botones
         button_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
-        button_frame.pack(pady=(theme.PADDING_M, 0))
+        button_frame.pack(pady=(theme.PADDING_M, 0), fill="x")
         
         # Crear botones
         if buttons is None:
@@ -105,7 +107,7 @@ class CustomDialog:
             ok_btn = ctk.CTkButton(
                 button_frame,
                 text="Aceptar",
-                **theme.get_button_colors(),
+                **theme.get_button_colors("primary"),
                 command=lambda: self.close(True),
                 width=120,
                 height=theme.BUTTON_HEIGHT,
@@ -114,17 +116,19 @@ class CustomDialog:
             ok_btn.pack()
         else:
             # Botones personalizados
-            for btn_text, btn_callback in buttons:
+            for i, (btn_text, btn_callback) in enumerate(buttons):
+                # Primer botón (Sí) estilo primario, segundo (No) estilo secundario
+                btn_style = "primary" if i == 0 else "secondary"
                 btn = ctk.CTkButton(
                     button_frame,
                     text=btn_text,
-                    **theme.get_button_colors(),
+                    **theme.get_button_colors(btn_style),
                     command=lambda cb=btn_callback: self.close(cb),
                     width=120,
                     height=theme.BUTTON_HEIGHT,
                     font=theme.FONT_BODY
                 )
-                btn.pack(side="left", padx=theme.PADDING_XS)
+                btn.pack(side="left", padx=theme.PADDING_S, expand=True)
         
         # Enter para cerrar
         self.window.bind("<Return>", lambda e: self.close(True))

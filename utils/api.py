@@ -43,7 +43,7 @@ class SteamGridDBAPI:
         Args:
             game_id: ID del juego en SteamGridDB
             image_type: 'cover', 'banner' o 'icon'
-            runner: Runner del juego (para aplicar filtros anti-DMCA)
+            runner: Runner del juego (para aplicar filtros Skip Notices)
             limit: Cantidad máxima de resultados
         """
         # Determinar el endpoint según el tipo
@@ -77,7 +77,7 @@ class SteamGridDBAPI:
                 if data.get('success') and data.get('data'):
                     images = []
                     
-                    # Aplicar filtro anti-DMCA para juegos de Nintendo
+                    # Aplicar filtro Skip Notices para juegos de Nintendo
                     start_index = 0
                     if runner in config.NINTENDO_RUNNERS:
                         skip_count = config.SKIP_COUNT.get(image_type, 0)

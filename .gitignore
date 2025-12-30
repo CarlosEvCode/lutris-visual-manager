@@ -46,6 +46,8 @@ build/
 .env
 .env.local
 config_local.py
+config.json
 apikey.txt
 *_apikey.txt
+*.key
 

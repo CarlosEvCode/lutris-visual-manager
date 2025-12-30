@@ -7,7 +7,7 @@ Aplicación gráfica para gestionar visualmente las imágenes (covers, banners e
 - ✅ **Visualización de imágenes actuales**: Ve los covers, banners e iconos de cada juego
 - 🔄 **Cambio instantáneo**: Reemplaza imágenes con un solo clic
 - 🎯 **Selector intuitivo**: Elige entre múltiples opciones de SteamGridDB
-- 🛡️ **Filtro anti-DMCA**: Especialmente optimizado para juegos de Nintendo
+- 🛡️ **Skip Notices**: Omite avisos de copyright en búsqueda de imágenes
 - 🎨 **Soporte multi-plataforma**: MAME, PlayStation, Nintendo 3DS, Wii U, etc.
 
 ## 🚀 Instalación
@@ -123,7 +123,7 @@ Puedes modificar `config.py` para:
 
 - Cambiar rutas de Lutris
 - Ajustar tamaños de miniaturas
-- Modificar filtros anti-DMCA
+- Modificar filtros Skip Notices
 - Agregar más plataformas
 
 ## 📦 Distribución
@@ -134,11 +134,11 @@ Puedes modificar `config.py` para:
 - Empaquetar como Flatpak/Snap
 - Instrucciones detalladas para cada método
 
-## 🛡️ Filtro Anti-DMCA
+## 🛡️ Skip Notices
 
 Para juegos de Nintendo (3DS, Wii U), el sistema automáticamente:
 
-- Salta las primeras imágenes (suelen ser avisos DMCA)
+- Salta las primeras imágenes (suelen ser avisos de copyright)
 - Ordena por puntuación
 - Toma las imágenes más votadas
 

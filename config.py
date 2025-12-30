@@ -86,7 +86,7 @@ PLATFORMS = {
 }
 
 # ==========================================
-# 🛡️ FILTROS ANTI-DMCA
+# 🛡️ FILTROS - SKIP NOTICES
 # ==========================================
 # Runners de Nintendo que necesitan filtro más agresivo
 NINTENDO_RUNNERS = ["citra", "cemu"]

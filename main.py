@@ -13,8 +13,23 @@ import os
 # Asegurarse de que el directorio actual esté en el path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+# Fix para fuentes de CustomTkinter en AppImage y para X11 en VirtualBox
+if getattr(sys, 'frozen', False):
+    # Estamos en un ejecutable empaquetado
+    os.environ['FONTCONFIG_PATH'] = '/etc/fonts'
+    os.environ['FONTCONFIG_FILE'] = '/etc/fonts/fonts.conf'
+
+# Fix para problemas de X11 en VirtualBox (BadLength error)
+os.environ['QT_X11_NO_MITSHM'] = '1'
+os.environ['_X11_NO_MITSHM'] = '1'
+os.environ['XLIB_SKIP_ARGB_VISUALS'] = '1'
+
 def check_dependencies():
     """Verifica que las dependencias estén instaladas"""
+    # Si estamos en un ejecutable empaquetado, asumimos que las dependencias están incluidas
+    if getattr(sys, 'frozen', False):
+        return True
+    
     try:
         import tkinter
     except ImportError:

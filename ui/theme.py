@@ -124,18 +124,27 @@ def get_hover_card_style():
 # 🔤 TIPOGRAFÍA
 # ==========================================
 
-FONT_FAMILY = "Segoe UI"  # Fallback a sistema
+# Usar fuente por defecto del sistema para evitar problemas de X11/RENDER
+# No especificar familia de fuente permite que Tkinter use la fuente del sistema
+FONT_FAMILY = None  # None usa la fuente por defecto de Tkinter
 
-# Títulos
-FONT_TITLE = (FONT_FAMILY, 24, "bold")
-FONT_SUBTITLE = (FONT_FAMILY, 18, "bold")
-FONT_HEADING = (FONT_FAMILY, 16, "bold")
+# Crear tuplas de fuentes de manera segura
+def _make_font(size, weight=None):
+    """Crea tupla de fuente segura para el sistema"""
+    if weight:
+        return ("TkDefaultFont", size, weight)
+    return ("TkDefaultFont", size)
+
+# Títulos - Tamaños reducidos para evitar problemas de X11 en VirtualBox
+FONT_TITLE = _make_font(18, "bold")
+FONT_SUBTITLE = _make_font(14, "bold")
+FONT_HEADING = _make_font(12, "bold")
 
 # Cuerpo
-FONT_BODY = (FONT_FAMILY, 13)
-FONT_BODY_BOLD = (FONT_FAMILY, 13, "bold")
-FONT_SMALL = (FONT_FAMILY, 11)
-FONT_TINY = (FONT_FAMILY, 9)
+FONT_BODY = _make_font(11)
+FONT_BODY_BOLD = _make_font(11, "bold")
+FONT_SMALL = _make_font(10)
+FONT_TINY = _make_font(9)
 
 # ==========================================
 # 📏 ESPACIADO Y DIMENSIONES
@@ -159,28 +168,28 @@ INPUT_HEIGHT = 40
 CARD_MIN_HEIGHT = 100
 
 # ==========================================
-# 🎭 ICONOS (EMOJI como fallback)
+# 🎭 ICONOS - Reemplazados por texto para evitar problemas de X11
 # ==========================================
 
 ICONS = {
-    "game": "🎮",
-    "cover": "📦",
-    "banner": "🖼️",
-    "icon": "🎯",
-    "search": "🔍",
-    "download": "⬇️",
-    "upload": "⬆️",
-    "settings": "⚙️",
-    "refresh": "🔄",
-    "check": "✓",
-    "close": "✗",
-    "warning": "⚠️",
-    "error": "❌",
-    "success": "✅",
-    "info": "ℹ️",
-    "folder": "📁",
-    "image": "🖼️",
-    "platform": "🕹️",
-    "native": "🐧",
-    "flatpak": "📦",
+    "game": "",
+    "cover": "[Cover]",
+    "banner": "[Banner]",
+    "icon": "[Icon]",
+    "search": "",
+    "download": "",
+    "upload": "",
+    "settings": "",
+    "refresh": "",
+    "check": "[OK]",
+    "close": "[X]",
+    "warning": "",
+    "error": "",
+    "success": "[OK]",
+    "info": "",
+    "folder": "",
+    "image": "",
+    "platform": "",
+    "native": "[NATIVA]",
+    "flatpak": "[FLATPAK]",
 }

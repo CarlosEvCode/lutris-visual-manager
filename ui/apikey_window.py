@@ -3,6 +3,16 @@ Ventana para solicitar el API Key de SteamGridDB
 """
 import customtkinter as ctk
 from ui import theme
+import os
+
+# Configurar CustomTkinter para evitar problemas de X11
+os.environ.setdefault('TK_SILENCE_DEPRECATION', '1')
+
+# Configurar escalado de fuentes para reducir carga en X11
+try:
+    ctk.deactivate_automatic_dpi_awareness()
+except:
+    pass
 
 class APIKeyWindow:
     def __init__(self, show_change_option=False, current_key=None):
@@ -46,10 +56,10 @@ class APIKeyWindow:
         )
         main_frame.pack(fill="both", expand=True, padx=theme.PADDING_L, pady=theme.PADDING_L)
         
-        # Título
-        title_text = "🔑 API Key de SteamGridDB"
+        # Título - SIN EMOJIS para evitar problemas de X11
+        title_text = "API Key de SteamGridDB"
         if self.show_change_option:
-            title_text = "🔄 Cambiar API Key"
+            title_text = "Cambiar API Key"
         
         title_label = ctk.CTkLabel(
             main_frame,
@@ -61,8 +71,8 @@ class APIKeyWindow:
         
         # Descripción
         desc_text = (
-            "Para usar esta aplicación, necesitas un API Key de SteamGridDB.\n"
-            "Es gratuito y te permite buscar imágenes para tus juegos."
+            "Para usar esta aplicacion, necesitas un API Key de SteamGridDB.\n"
+            "Es gratuito y te permite buscar imagenes para tus juegos."
         )
         desc_label = ctk.CTkLabel(
             main_frame,
@@ -84,7 +94,7 @@ class APIKeyWindow:
         
         instructions_title = ctk.CTkLabel(
             instructions_frame,
-            text="📋 Cómo obtener tu API Key:",
+            text="Como obtener tu API Key:",
             font=theme.FONT_HEADING,
             text_color=theme.ACCENT_BLUE,
             anchor="w"
@@ -140,10 +150,10 @@ class APIKeyWindow:
         # Bind Enter key
         self.api_key_entry.bind("<Return>", lambda e: self.on_continue())
         
-        # Nota sobre seguridad
+        # Nota sobre seguridad - SIN EMOJI
         security_note = ctk.CTkLabel(
             main_frame,
-            text="🔒 Tu API Key se guardará de forma segura en ~/.config/lutris-visual-manager/",
+            text="Tu API Key se guardara de forma segura en ~/.config/lutris-visual-manager/",
             font=theme.FONT_SMALL,
             text_color=theme.TEXT_SECONDARY,
             wraplength=500

@@ -5,6 +5,7 @@ Versión moderna con CustomTkinter y Material Design
 import customtkinter as ctk
 from PIL import Image
 import threading
+import os
 import config
 from utils.database import LutrisDatabase
 from utils.api import SteamGridDBAPI
@@ -12,6 +13,15 @@ from utils.image_manager import ImageManager
 from ui.selector_window import SelectorWindow
 from ui import theme
 from ui import dialogs
+
+# Configurar CustomTkinter para evitar problemas de X11
+os.environ.setdefault('TK_SILENCE_DEPRECATION', '1')
+
+# Configurar escalado de fuentes para reducir carga en X11
+try:
+    ctk.deactivate_automatic_dpi_awareness()
+except:
+    pass
 
 
 class MainWindow:
@@ -70,14 +80,14 @@ class MainWindow:
         # Padding superior
         ctk.CTkLabel(self.sidebar, text="", height=20).pack()
         
-        # Logo / Título
+        # Logo / Título - SIN EMOJI grande para evitar problemas de X11
         logo_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
         logo_frame.pack(pady=theme.PADDING_M, padx=theme.PADDING_M)
         
         logo_label = ctk.CTkLabel(
             logo_frame,
-            text=f"{theme.ICONS['game']}",
-            font=("Arial", 48),
+            text="[LVM]",
+            font=("TkDefaultFont", 24, "bold"),
             text_color=theme.ACCENT_BLUE
         )
         logo_label.pack()

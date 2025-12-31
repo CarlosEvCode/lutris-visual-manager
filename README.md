@@ -12,14 +12,38 @@ Aplicación gráfica para gestionar visualmente las imágenes (covers, banners e
 
 ## 🚀 Instalación
 
-### Requisitos
+### Opción 1: Instalación Local (Recomendada)
 
 ```bash
-# Ubuntu/Debian/Mint
-sudo apt install python3-tk
+git clone https://github.com/CarlosEvCode/lutris-visual-manager.git
+cd lutris-visual-manager
+./install.sh
+```
+
+Esto instalará la aplicación en `~/.local/share/lutris-visual-manager` y creará un lanzador en tu menú de aplicaciones.
+
+### Opción 2: AppImage
+
+Descarga el AppImage desde [Releases](https://github.com/CarlosEvCode/lutris-visual-manager/releases) y ejecútalo:
+
+```bash
+chmod +x lutris-visual-manager-x86_64.AppImage
+./lutris-visual-manager-x86_64.AppImage
+```
+
+**Nota**: El AppImage se compila en Linux Mint para máxima compatibilidad. Ver [COMPILACION.md](COMPILACION.md) para detalles técnicos.
+
+### Opción 3: Ejecutar desde Código Fuente
+
+```bash
+# Requisitos
+sudo apt install python3-tk  # Ubuntu/Debian/Mint
 
 # Instalar dependencias Python
 pip install -r requirements.txt
+
+# Ejecutar
+./run.sh
 ```
 
 ### API Key de SteamGridDB

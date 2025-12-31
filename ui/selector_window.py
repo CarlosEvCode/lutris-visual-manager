@@ -7,10 +7,20 @@ from tkinter import messagebox
 from PIL import Image
 import threading
 from typing import Callable
+import os
 import config
 from utils.api import SteamGridDBAPI
 from utils.image_manager import ImageManager
 from ui import theme
+
+# Configurar CustomTkinter para evitar problemas de X11
+os.environ.setdefault('TK_SILENCE_DEPRECATION', '1')
+
+# Configurar escalado de fuentes para reducir carga en X11
+try:
+    ctk.deactivate_automatic_dpi_awareness()
+except:
+    pass
 
 
 class SelectorWindow:

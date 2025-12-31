@@ -6,6 +6,15 @@ import customtkinter as ctk
 import os
 from ui import theme
 
+# Configurar CustomTkinter para evitar problemas de X11
+os.environ.setdefault('TK_SILENCE_DEPRECATION', '1')
+
+# Configurar escalado de fuentes para reducir carga en X11
+try:
+    ctk.deactivate_automatic_dpi_awareness()
+except:
+    pass
+
 
 class InstallationSelector:
     def __init__(self):
@@ -55,10 +64,10 @@ class InstallationSelector:
         )
         main_frame.pack(fill="both", expand=True, padx=theme.PADDING_L, pady=theme.PADDING_L)
         
-        # Título principal
+        # Título principal - SIN EMOJIS
         title_label = ctk.CTkLabel(
             main_frame,
-            text=f"{theme.ICONS['game']} Lutris Visual Manager",
+            text="Lutris Visual Manager",
             font=theme.FONT_TITLE,
             text_color=theme.TEXT_PRIMARY
         )
@@ -67,7 +76,7 @@ class InstallationSelector:
         # Subtítulo
         subtitle_label = ctk.CTkLabel(
             main_frame,
-            text="Selecciona tu instalación de Lutris",
+            text="Selecciona tu instalacion de Lutris",
             font=theme.FONT_BODY,
             text_color=theme.TEXT_SECONDARY
         )
@@ -84,22 +93,22 @@ class InstallationSelector:
         options_frame.grid_columnconfigure(0, weight=1)
         options_frame.grid_columnconfigure(1, weight=1)
         
-        # Opción 1: Nativa (columna 0)
+        # Opción 1: Nativa (columna 0) - SIN EMOJIS
         self.create_option_card(
             options_frame,
-            icon=theme.ICONS['native'],
-            title="Instalación Nativa",
+            icon="[NATIVA]",
+            title="Instalacion Nativa",
             description="~/.local/share/lutris/",
             exists=self.native_exists,
             command=lambda: self.select_mode("NATIVO"),
             column=0
         )
         
-        # Opción 2: Flatpak (columna 1)
+        # Opción 2: Flatpak (columna 1) - SIN EMOJIS
         self.create_option_card(
             options_frame,
-            icon=theme.ICONS['flatpak'],
-            title="Instalación Flatpak",
+            icon="[FLATPAK]",
+            title="Instalacion Flatpak",
             description="~/.var/app/net.lutris.Lutris/",
             exists=self.flatpak_exists,
             command=lambda: self.select_mode("FLATPAK"),
@@ -119,7 +128,7 @@ class InstallationSelector:
             
             warning_label = ctk.CTkLabel(
                 warning_frame,
-                text=f"{theme.ICONS['warning']} No se detectó ninguna instalación de Lutris",
+                text="No se detecto ninguna instalacion de Lutris",
                 font=theme.FONT_BODY,
                 text_color=theme.WARNING
             )
@@ -136,14 +145,14 @@ class InstallationSelector:
             border_color = theme.BORDER
             hover_color = theme.TERTIARY_BG
             text_color = theme.TEXT_PRIMARY
-            status_text = f"{theme.ICONS['check']} Detectada"
+            status_text = "[OK] Detectada"
             status_color = theme.SUCCESS
         else:
             fg_color = theme.SECONDARY_BG
             border_color = theme.BORDER
             hover_color = theme.SECONDARY_BG
             text_color = theme.TEXT_DISABLED
-            status_text = f"{theme.ICONS['close']} No encontrada"
+            status_text = "[X] No encontrada"
             status_color = theme.TEXT_DISABLED
         
         # Frame principal de la card
@@ -163,11 +172,11 @@ class InstallationSelector:
         )
         inner_frame.pack(fill="both", expand=True, padx=theme.PADDING_M, pady=theme.PADDING_L)
         
-        # Icono grande centrado
+        # Icono grande centrado - Tamaño reducido para evitar problemas de X11
         icon_label = ctk.CTkLabel(
             inner_frame,
             text=icon,
-            font=("Arial", 64),
+            font=("TkDefaultFont", 32),
             text_color=text_color
         )
         icon_label.pack(pady=(theme.PADDING_M, theme.PADDING_S))

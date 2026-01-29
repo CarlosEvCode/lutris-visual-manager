@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Lutris Visual Manager
-Comment=Gestor visual de imágenes para Lutris
+Name=L-Visual-Manager
+Comment=Gestor visual de imágenes para L
 Exec=AppRun
-Icon=lutris-visual-manager
+Icon=l-visual-manager
 Type=Application
 Categories=Game;Utility;
 Terminal=false

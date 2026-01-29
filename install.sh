@@ -18,7 +18,7 @@ mkdir -p "$DESKTOP_DIR"
 
 # Copiar archivos del proyecto
 echo "📁 Copiando archivos..."
-cp -r main.py ui utils config.py lutris_detector.py requirements.txt "$INSTALL_DIR/"
+cp -r main.py ui utils config.py l_detector.py requirements.txt "$INSTALL_DIR/"
 cp appimage/icon.png "$INSTALL_DIR/"
 
 # Crear script launcher
@@ -33,10 +33,10 @@ chmod +x "$BIN_DIR/lutris-visual-manager"
 
 # Crear archivo .desktop
 echo "🖥️  Creando entrada de menú..."
-cat > "$DESKTOP_DIR/lutris-visual-manager.desktop" << EOF
+cat > "$DESKTOP_DIR/l-visual-manager.desktop" << EOF
 [Desktop Entry]
-Name=Lutris Visual Manager
-Comment=Gestor visual de imágenes para Lutris
+Name=L-Visual-Manager
+Comment=Gestor visual de imágenes para L
 Exec=$BIN_DIR/lutris-visual-manager
 Icon=$INSTALL_DIR/icon.png
 Terminal=false
@@ -58,10 +58,10 @@ echo ""
 echo "✅ ¡Instalación completada!"
 echo ""
 echo "Puedes ejecutar la aplicación de estas formas:"
-echo "  1. Busca 'Lutris Visual Manager' en el menú de aplicaciones"
+echo "  1. Busca 'L-Visual-Manager' en el menú de aplicaciones"
 echo "  2. Ejecuta: lutris-visual-manager"
 echo ""
 echo "Para desinstalar:"
 echo "  rm -rf $INSTALL_DIR"
 echo "  rm $BIN_DIR/lutris-visual-manager"
-echo "  rm $DESKTOP_DIR/lutris-visual-manager.desktop"
+echo "  rm $DESKTOP_DIR/l-visual-manager.desktop"

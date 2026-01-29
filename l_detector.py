@@ -5,7 +5,7 @@ Detecta automáticamente si Lutris es Nativo o Flatpak y configura las rutas
 import os
 import sys
 
-class LutrisDetector:
+class LDetector:
     """Clase para detectar y configurar rutas de Lutris"""
     
     # Rutas potenciales de la base de datos
@@ -183,7 +183,7 @@ def get_lutris_paths(interactive=True, mode=None):
     Returns:
         dict con las rutas configuradas
     """
-    detector = LutrisDetector(mode=mode)
+    detector = LDetector(mode=mode)
     if interactive and not mode:
         detector.print_summary()
     return detector.get_paths()

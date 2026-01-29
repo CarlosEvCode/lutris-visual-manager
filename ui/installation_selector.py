@@ -34,7 +34,7 @@ class InstallationSelector:
         
         # Crear ventana
         self.window = ctk.CTk()
-        self.window.title("Lutris Visual Manager")
+        self.window.title("L-Visual-Manager")
         self.window.geometry("700x450")
         self.window.resizable(False, False)
         
@@ -67,7 +67,7 @@ class InstallationSelector:
         # Título principal - SIN EMOJIS
         title_label = ctk.CTkLabel(
             main_frame,
-            text="Lutris Visual Manager",
+            text="L-Visual-Manager",
             font=theme.FONT_TITLE,
             text_color=theme.TEXT_PRIMARY
         )

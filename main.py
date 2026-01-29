@@ -49,7 +49,7 @@ def check_dependencies():
 def main():
     """Punto de entrada de la aplicación"""
     print("=" * 50)
-    print("🎮 Lutris Visual Manager")
+    print("🎮 L-Visual-Manager")
     print("=" * 50)
     
     # Verificar dependencias

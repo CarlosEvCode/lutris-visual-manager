@@ -60,7 +60,7 @@ a = Analysis(
     datas=[
         ('ui', 'ui'),
         ('utils', 'utils'),
-        ('lutris_detector.py', '.'),
+        ('l_detector.py', '.'),
     ] + pillow_datas, 
     hiddenimports=[
         'customtkinter',
@@ -91,9 +91,9 @@ excluded_binaries = [
     'libexpat', 
     'libharfbuzz',
     'libX11',
-    'libxcb',
-    'libXau',
-    'libXdmcp',
+    # 'libxcb',  # NEEDED for Pillow binary wheels
+    # 'libXau',  # NEEDED for Pillow binary wheels
+    # 'libXdmcp', # NEEDED for Pillow binary wheels
     'libXext',
     'libXrender',
     'libGL',
@@ -106,7 +106,7 @@ excluded_binaries = [
     'libgmodule',
     'libgthread',
     'libpcre',
-    'libxcb-',  # Excluir todas las variantes de libxcb
+    # 'libxcb-',  # NEEDED for Pillow binary wheels
     'libxkb',
     # libffi NO se excluye porque la incluimos explícitamente
     'libselinux',
@@ -192,8 +192,8 @@ cp -r dist/lutris-visual-manager build/AppDir/usr/bin/
 
 # Limpiar librerías conflictivas del directorio compilado
 echo "🧹 Eliminando librerías de sistema conflictivas..."
-find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libxcb*" -delete
-find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libX11*" -delete
+# find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libxcb*" -delete  # Fix for Pillow
+# find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libX11*" -delete # Fix for Pillow
 find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libfontconfig*" -delete
 find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libfreetype*" -delete
 find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libGL*" -delete
@@ -201,10 +201,10 @@ find build/AppDir/usr/bin/lutris-visual-manager -type f -name "libGL*" -delete
 echo ""
 
 # Copiar archivos de desktop e icono
-cp appimage/lutris-visual-manager.desktop build/AppDir/
-cp appimage/lutris-visual-manager.desktop build/AppDir/usr/share/applications/
-cp appimage/icon.png build/AppDir/lutris-visual-manager.png
-cp appimage/icon.png build/AppDir/usr/share/icons/hicolor/512x512/apps/lutris-visual-manager.png
+cp appimage/l-visual-manager.desktop build/AppDir/
+cp appimage/l-visual-manager.desktop build/AppDir/usr/share/applications/
+cp appimage/icon.png build/AppDir/l-visual-manager.png
+cp appimage/icon.png build/AppDir/usr/share/icons/hicolor/512x512/apps/l-visual-manager.png
 cp appimage/icon.png build/AppDir/.DirIcon
 
 # Crear AppRun mejorado

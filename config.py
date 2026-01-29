@@ -16,7 +16,7 @@ STEAMGRIDDB_API_KEY = None
 # ==========================================
 # Importar el detector universal
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lutris_detector import get_lutris_paths
+from l_detector import get_lutris_paths
 
 # Esta función se llamará después de obtener el modo del usuario
 def configure_lutris_paths(mode=None):
@@ -58,7 +58,7 @@ SYSTEM_ICONS_DIR = None
 # ==========================================
 # 🎨 CONFIGURACIÓN DE LA INTERFAZ
 # ==========================================
-WINDOW_TITLE = "Lutris Visual Manager"
+WINDOW_TITLE = "L-Visual-Manager"
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 700
 

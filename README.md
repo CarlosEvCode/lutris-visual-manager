@@ -1,4 +1,4 @@
-# 🎮 Lutris Visual Manager
+# 🎮 L-Visual-Manager
 
 Aplicación gráfica para gestionar visualmente las imágenes (covers, banners e iconos) de tus juegos en Lutris.
 

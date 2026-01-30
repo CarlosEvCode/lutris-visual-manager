@@ -359,6 +359,20 @@ class MainWindow:
         )
         slug_label.pack(anchor="w", pady=(0, theme.PADDING_M))
         
+        # Botón de editar metadatos (Top Right)
+        edit_btn = ctk.CTkButton(
+            inner_frame,
+            text="✏️ Editar",
+            width=80,
+            height=24,
+            fg_color=theme.TERTIARY_BG,
+            hover_color=theme.HOVER_BG,
+            text_color=theme.TEXT_SECONDARY,
+            command=lambda: self.open_metadata_editor(game)
+        )
+        edit_btn.place(relx=1.0, rely=0.0, anchor="ne", x=0, y=0)
+
+        
         # Separador
         ctk.CTkFrame(
             inner_frame,
@@ -450,6 +464,40 @@ class MainWindow:
         
         return section_frame
     
+    def open_metadata_editor(self, game):
+        """Abre la ventana para corregir metadatos"""
+        from ui.metadata_window import MetadataWindow
+        
+        def on_update(sgdb_id=None):
+            self.refresh_games()
+            self.show_notification("Nombre actualizado correctly")
+            
+            # Si recibimos un ID de SGDB, descargamos las imágenes automáticamente
+            if sgdb_id:
+                self.show_notification("Descargando imágenes nuevas...", type="info")
+                
+                def batch_download():
+                    # Ejecutar descarga en batch
+                    results = self.image_manager.batch_update_images(
+                        game['slug'], 
+                        sgdb_id, 
+                        self.api
+                    )
+                    
+                    # Notificar resultados
+                    updated = [k for k, v in results.items() if v]
+                    if updated:
+                        msg = f"Imágenes actualizadas: {', '.join(updated)}"
+                        self.root.after(0, lambda: self.show_notification(msg))
+                        # Refrescar UI nuevamente para mostrar imágenes
+                        self.root.after(0, self.refresh_games)
+                    else:
+                        self.root.after(0, lambda: self.show_notification("No se encontraron imágenes nuevas", type="warning"))
+
+                threading.Thread(target=batch_download, daemon=True).start()
+            
+        MetadataWindow(self.root, game, self.db, on_update)
+
     def open_selector(self, game, image_type):
         """Abre la ventana de selección de imágenes"""
         # Buscar el juego en SGDB
@@ -470,6 +518,8 @@ class MainWindow:
     
     def on_image_selected(self, slug, image_type, url):
         """Callback cuando se selecciona una imagen"""
+        self.show_notification(f"Actualizando {image_type}...", type="info")
+        
         # Reemplazar la imagen en un hilo separado
         def replace():
             success = self.image_manager.replace_image(slug, image_type, url)
@@ -488,12 +538,7 @@ class MainWindow:
     
     def on_replace_success(self, image_type):
         """Maneja el éxito al reemplazar una imagen"""
-        dialogs.show_success(
-            self.root,
-            "Éxito",
-            f"{image_type.capitalize()} actualizado correctamente.\n"
-            "Reinicia Lutris para ver los cambios."
-        )
+        self.show_notification(f"{image_type.capitalize()} actualizado")
         # Refrescar la lista
         self.refresh_games()
     
@@ -580,6 +625,34 @@ class MainWindow:
                     "No se pudo guardar el nuevo API Key."
                 )
     
+    def show_notification(self, message, type="success"):
+        """Muestra una notificación flotante (toast)"""
+        color = theme.SUCCESS if type == "success" else theme.ACCENT_BLUE
+        
+        # Frame de notificación
+        notification = ctk.CTkFrame(
+            self.root, 
+            fg_color=color, 
+            corner_radius=20,
+            height=40
+        )
+        notification.place(relx=0.5, rely=0.9, anchor="center")
+        
+        # Icono y Texto
+        container = ctk.CTkFrame(notification, fg_color="transparent")
+        container.pack(padx=20, pady=10)
+        
+        ctk.CTkLabel(
+            container,
+            text=message,
+            font=theme.FONT_BODY_BOLD,
+            text_color="white"
+        ).pack()
+        
+        # Animación de entrada (simulada)
+        # Auto-destrucción
+        self.root.after(2500, notification.destroy)
+
     def run(self):
         """Inicia la aplicación"""
         self.root.mainloop()

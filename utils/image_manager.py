@@ -161,3 +161,43 @@ class ImageManager:
         except Exception as e:
             print(f"Error descargando miniatura: {e}")
             return None
+    
+    def batch_update_images(self, slug: str, game_id: int, api) -> dict:
+        """
+        Actualiza todas las imágenes (Cover, Banner, Icon) automáticamente
+        usando el ID de SteamGridDB.
+        
+        Args:
+            slug: Identificador local del juego
+            game_id: ID de SteamGridDB
+            api: Instancia de SteamGridDBAPI
+            
+        Returns:
+            Dict con el resultado por tipo {'cover': bool, 'banner': bool, 'icon': bool}
+        """
+        results = {'cover': False, 'banner': False, 'icon': False}
+        
+        try:
+            # Obtener URLs de todas las imágenes disponibles
+            images = api.get_all_images(game_id)
+            
+            # 1. Cover
+            if images.get('covers'):
+                # Tomar la primera imagen (mejor score)
+                url = images['covers'][0]['url']
+                results['cover'] = self.replace_image(slug, 'cover', url)
+            
+            # 2. Banner
+            if images.get('banners'):
+                url = images['banners'][0]['url']
+                results['banner'] = self.replace_image(slug, 'banner', url)
+                
+            # 3. Icon
+            if images.get('icons'):
+                url = images['icons'][0]['url']
+                results['icon'] = self.replace_image(slug, 'icon', url)
+                
+        except Exception as e:
+            print(f"Error en batch update: {e}")
+            
+        return results

@@ -104,6 +104,23 @@ class SteamGridDBAPI:
         except Exception as e:
             print(f"Error buscando juego: {e}")
         return None
+
+    def search_games(self, query: str) -> List[Dict]:
+        """Busca juegos en SteamGridDB y retorna una lista"""
+        url = f"{self.base_url}/search/autocomplete/{urllib.parse.quote(query)}"
+        try:
+            req = urllib.request.Request(url)
+            with self._make_request(req) as r:
+                data = json.loads(r.read().decode())
+                if data.get('success') and data.get('data'):
+                    return [{
+                        'id': item['id'],
+                        'name': item['name']
+                    } for item in data['data']]
+        except Exception as e:
+            print(f"Error buscando juegos: {e}")
+        return []
+
     
     def get_images(self, game_id: int, image_type: str, runner: str = None, limit: int = 12) -> List[Dict]:
         """

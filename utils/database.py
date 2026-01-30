@@ -71,6 +71,19 @@ class LutrisDatabase:
         conn.commit()
         conn.close()
     
+    def update_game_name(self, game_id: int, new_name: str):
+        """Actualiza solo el nombre y sortname de un juego (corrección de metadatos)"""
+        conn = self._connect()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE games
+            SET name=?,
+                sortname=?
+            WHERE id=?
+        """, (new_name, new_name, game_id))
+        conn.commit()
+        conn.close()
+
     def get_game_by_id(self, game_id: int) -> Optional[Dict]:
         """Obtiene un juego específico por su ID"""
         conn = self._connect()
